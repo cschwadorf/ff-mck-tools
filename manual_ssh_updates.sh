@@ -1,3 +1,4 @@
+uci set autoupdater.stable.mirror=''
 uci add_list autoupdater.stable.mirror='http://[fda0:747e:ab29:2241:215:5dff:fee1:d02f]/update/stable/images/sysupgrade'
 uci add_list autoupdater.stable.mirror='http://[fda0:747e:ab29:2241:62e3:27ff:fe4a:7c34]/update/stable/images/sysupgrade/'
 uci set autoupdater.stable.good_signatures='1'
