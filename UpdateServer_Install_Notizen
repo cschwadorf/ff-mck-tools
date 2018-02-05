@@ -1,0 +1,38 @@
+Bisher getestet unter Hyper-V mit x86 Image
+
+1. Installation einer Node mit aktueller Firmware
+
+2. Autoupdater abschalten:
+	uci set autoupdater.settings.enabled='0' && uci commit autoupdater
+
+3. DNS Aufloesungt korrigiert
+	printf "search lan\nnameserver 8.8.8.8\n" > /etc/resolv.conf
+
+4. fdisk installiert
+	opkg update
+	opkg install fdisk
+5. Zweites Medium mit fdisk partitioniert 
+
+6. Dateisystem erstellt
+	mkfs.ext4 /dev/sdb1
+
+7. Zeitserver auf pool.ntp.org festgelegt und eingebauten NTP Server deaktiviert
+	uci set system.ntp.enable_server=0
+	uci set system.ntp.server=''
+	uci add_list system.ntp.server='pool.ntp.org';
+	uci commit system.ntp
+
+8. Cronjobs zum korrigieren der DNS Aufloesung und automatischem mounten der externen Festplatte
+	echo "/usr/lib/micron.d/mountupdates" >> /etc/sysupgrade.conf
+	echo "* * * * * if [[ ! \"\$(cat /etc/resolv.conf | grep 8.8.8.8)\" == "nameserver 8.8.8.8" ]] ; then printf "search lan\nnameserver 8.8.8.8\n" > /etc/resolv.conf; fi" >> /usr/lib/micron.d/mountupdates
+	echo "* * * * * if [[ ! \$(mount | grep sdb1) -ne 0 ]] ; then mkdir /lib/gluon/status-page/www/update; mount -t ext4 /dev/sdb1 /lib/gluon/status-page/www/update -o rw,sync; fi" >> /usr/lib/micron.d/mountupdates
+	/etc/init.d/micrond restart
+
+9. ntpd und rsync installiert und aktiviert
+	opkg update
+	opkg install ntpd
+	opkg install rsync
+	/etc/init.d/ntpd enable
+	/etc/init.d/ntpd start
+
+Schritte 8 und 9 sind nach einem manuellen Update der Firmware per sysupgrade zu wiederholen.
