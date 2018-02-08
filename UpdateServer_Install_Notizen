@@ -1,4 +1,4 @@
-Bisher getestet unter Hyper-V mit x86 Image
+Bisher getestet unter Hyper-V mit x86 Image und TP-Link TL-WDR3600 v1
 
 1. Installation einer Node mit aktueller Firmware
 
@@ -12,6 +12,9 @@ Bisher getestet unter Hyper-V mit x86 Image
 	opkg update
 	opkg install fdisk
 5. Zweites Medium mit fdisk partitioniert 
+
+6a. (Nicht in Hyper-V) e2fsprogs installieren
+	opkg install e2fsprogs
 
 6. Dateisystem erstellt
 	mkfs.ext4 /dev/sdb1
