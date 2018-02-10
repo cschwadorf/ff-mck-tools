@@ -29,13 +29,8 @@ Bisher getestet unter Hyper-V mit x86 Image und TP-Link TL-WDR3600 v1
 	echo "/usr/lib/micron.d/mountupdates" >> /etc/sysupgrade.conf
 	echo "* * * * * A=\$(cat /etc/resolv.conf | grep 8.8.8.8); if [ -z \"\$A\" ]; then printf \"search lan\\nnameserver 8.8.8.8\\n\" > /etc/resolv.conf; fi" >> /usr/lib/micron.d/mountupdates
 	echo "* * * * * A=\$(mount | grep sdb1); if [ -z \"\$A\" ]; then mkdir /lib/gluon/status-page/www/update; mount -t ext4 /dev/sdb1 /lib/gluon/status-page/www/update -o rw,sync; fi" >> /usr/lib/micron.d/mountupdates
+	echo "* * * * * if [ ! -f /usr/bin/rsync ]; then opkg update && opkg install ntpd && /etc/init.d/ntpd enable && /etc/init.d/ntpd start && opkg install rsync; fi;" >> /usr/lib/micron.d/mountupdates
 	/etc/init.d/micrond restart
 
-9. ntpd und rsync installiert und aktiviert
-	opkg update
-	opkg install ntpd
-	opkg install rsync
-	/etc/init.d/ntpd enable
-	/etc/init.d/ntpd start
+9. Neustarten und bis zur Ausfuhrung des Cronjobs warten
 
-Schritte 8 und 9 sind nach einem manuellen Update der Firmware per sysupgrade zu wiederholen.
