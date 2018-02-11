@@ -26,7 +26,7 @@ case "$2" in
 esac
 
 cd /ff/gluon
-"make manifest GLUON_BRANCH=$FF_BRANCH DEFAULT_GLUON_RELEASE=$FF_RELEASE
+make manifest GLUON_BRANCH=$FF_BRANCH DEFAULT_GLUON_RELEASE=$FF_RELEASE
 contrib/sign.sh $1 output/images/sysupgrade/$FF_BRANCH.manifest
 
 rsync -azzh --delete /ff/gluon/output/ root@update01.freifunk.infra.its.local:/lib/gluon/status-page/www/update/$FF_BRANCH
