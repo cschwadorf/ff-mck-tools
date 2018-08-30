@@ -4,6 +4,9 @@ if [ -z "$FF_RELEASE" ]; then
 	exit;
 fi
 cd /ff/gluon
+git config --global url.https://github.com/.insteadOf git://github.com/
+make clean
+make update
 start=$(date +%s)
 #OPTIONS="BROKEN=1 DEFAULT_GLUON_RELEASE=$FF_RELEASE~exp$(date  '+%Y%m%d%H%M')"
 OPTIONS="DEFAULT_GLUON_RELEASE=$FF_RELEASE"
